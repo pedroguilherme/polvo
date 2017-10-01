@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8"/>
+        <base href="http://localhost/polvo/dev-php-challenge/pedrooliveira/app/" target="_blanks"/>
+
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script src="libs/bootstrap/js/bootstrap.min.js"></script>
+        <script src="libs/angularjs/angular.min.js"></script>
+        <script src="libs/angularjs/angular-locale_pt-br.js"></script>
+        <script src="libs/angularjs/angular-cookies.min.js"></script>
+        <script src="libs/sweetalert/sweetalert.min.js"></script>
+
+        <script src="js/module_app/app.js"></script>
+        <script src="js/module_app/controllers.js"></script>
+        <script src="js/module_app/services.js"></script>
+        <script src="js/module_app/directives.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="libs/bootstrap/css/bootstrap.min.css"/>
+        <link rel="stylesheet" type="text/css" href="painel/css/style.css"/>
+        <link rel="stylesheet" type="text/css" href="libs/font-awesome/css/font-awesome.min.css"/>
+        <link rel="stylesheet" type="text/css" href="libs/sweetalert/sweetalert.css"/>
+
+        <title>Polvo - Administrativo</title>
+    </head>
+    <body ng-app="app" ng-controller="polvoLoginControl" ng-init="valida_login()">
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                            data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="https://www.polvo.com.br/" target="_blank">Polvo</a>
+                </div>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li><a href="painel/index.html">Pedidos</a></li>
+                        <li><a href="painel/produto.html">Produtos</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li ng-click="sair();"><a class="click">Sair</a></li>
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container-fluid -->
+        </nav>
+        <div class="panel panel-default" style="margin:0 auto;width: 70%" ng-controller="polvoProdutosControl">
+            <span ng-if="acao == false">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Listagem de produtos </h3><br/><button class="btn btn-primary" ng-click="trocaAcao('cadastrar');">Cadastrar Novo</button>
+                </div>
+                <table class="table table-bordered" ng-init="pesquisa_produtos()">
+                    <thead>
+                        <th>SkuID</th>
+                        <th>Nome</th>
+                        <th>Preço Venda</th>
+                        <th>Descrição</th>
+                        <th>Editar</th>
+                        <th>Excluir</th>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="produto in produtos">
+                            <td>{{ produto.sku_id }}</td>
+                            <td>{{ produto.nome }}</td>
+                            <td>{{ produto.preco_venda | currency }}</td>
+                            <td>{{ produto.descricao }}</td>
+                            <td><span class="glyphicon glyphicon-pencil" ng-click="trocaAcao('editar', produto);" aria-hidden="true"></span></td>
+                            <td><span class="glyphicon glyphicon-remove" ng-click="deletar_produto(produto);" aria-hidden="true"></span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </span>
+            <span ng-if="acao == 'editar' || acao == 'cadastrar'">
+                <div class="panel-heading">Edição/Inclusão de produtos</div>
+                <br/>
+                <form ng-submit="produtoAction(produto, acao);">
+                    <div class="input-group">
+                        <label for="SkuID" class="sr-only">SkuID</label>
+                        <span class="input-group-addon" id="sizing-addon2">SkuId</span>
+                        <input type="text" ng-model="produto.sku_id" id="SkuID" class="form-control" aria-describedby="sizing-addon2" placeholder="SkuID" required/>
+                    </div><br/>
+                    <div class="input-group">
+                        <label for="Nome" class="sr-only">Nome Produto</label>
+                        <span class="input-group-addon" id="sizing-addon2">Nome</span>
+                        <input type="text" ng-model="produto.nome" id="Nome" class="form-control" aria-describedby="sizing-addon2" placeholder="Nome Produto" required/>
+                    </div><br/>
+                    <div class="input-group">
+                        <label for="preco_venda" class="sr-only">Preço Vendaa</label>
+                        <span class="input-group-addon" id="sizing-addon2">R$</span>
+                        <input type="text" ng-model="produto.preco_venda" id="preco_venda" class="form-control" aria-describedby="sizing-addon2" placeholder="Preço Venda" required/>
+                    </div><br/>
+                    <div class="input-group">
+                        <label for="descricao" class="sr-only">Descrição</label>
+                        <span class="input-group-addon" id="sizing-addon2">Descrição</span>
+                        <input type="text" ng-model="produto.descricao" id="descricao" class="form-control" aria-describedby="sizing-addon2" placeholder="Descrição" required/>
+                    </div><br/>
+                    <div class="input-group" style="margin:0 auto; text-align: center;">
+                        <button class="btn btn-primary btn-block" type="submit">Enviar</button>
+                    </div>
+                    <br/>
+                    <br/>
+                </form>
+            </span>
+        </div>
+    </body>
+</html>

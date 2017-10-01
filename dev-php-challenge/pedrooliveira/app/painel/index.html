@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8"/>
+        <base href="http://localhost/polvo/dev-php-challenge/pedrooliveira/app/" target="_blanks"/>
+
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script src="libs/bootstrap/js/bootstrap.min.js"></script>
+        <script src="libs/angularjs/angular.min.js"></script>
+        <script src="libs/angularjs/angular-locale_pt-br.js"></script>
+        <script src="libs/angularjs/angular-cookies.min.js"></script>
+        <script src="libs/sweetalert/sweetalert.min.js"></script>
+
+        <script src="js/module_app/app.js"></script>
+        <script src="js/module_app/controllers.js"></script>
+        <script src="js/module_app/services.js"></script>
+        <script src="js/module_app/directives.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="libs/bootstrap/css/bootstrap.min.css"/>
+        <link rel="stylesheet" type="text/css" href="painel/css/style.css"/>
+        <link rel="stylesheet" type="text/css" href="libs/font-awesome/css/font-awesome.min.css"/>
+        <link rel="stylesheet" type="text/css" href="libs/sweetalert/sweetalert.css"/>
+
+        <title>Polvo - Administrativo</title>
+    </head>
+    <body ng-app="app" ng-controller="polvoLoginControl" ng-init="valida_login()">
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                            data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="https://www.polvo.com.br/" target="_blank">Polvo</a>
+                </div>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li><a href="painel/index.html">Pedidos</a></li>
+                        <li><a href="painel/produto.html">Produtos</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li ng-click="sair();"><a class="click">Sair</a></li>
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container-fluid -->
+        </nav>
+        <div class="panel panel-default" style="margin:0 auto;width: 50%" ng-controller="polvoPedidosControl">
+            <div class="panel-heading">Listagem de pedidos</div>
+            <table class="table table-bordered" ng-init="pesquisa_pedido()">
+                <tbody>
+                <tr ng-repeat="pedido in pedidos">
+                    <td>
+                        <table class="table">
+                            <tr>
+                                <td width="150px">Pedido:</td>
+                                <td>{{pedido.id}}</td>
+                            </tr>
+                            <tr>
+                                <td width="150px">Data e hora:</td>
+                                <td>{{pedido.data | date: 'dd/MM/yyyy'}}</td>
+                            </tr>
+                            <tr>
+                                <td width="150px">Valor total:</td>
+                                <td>{{pedido.valor_total | currency}}</td>
+                            </tr>
+                            <tr>
+                                <td width="150px"><strong>Produtos:</strong></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                        <tr>
+                                            <td>SkuID</td>
+                                            <td>Nome Produto</td>
+                                            <td>Qtd.</td>
+                                            <td>Valor Unitário</td>
+                                        </tr>
+                                        </thead>
+                                        <tr ng-repeat="carrinho in pedido.carrinho">
+                                            <td>{{carrinho.sku_id}}</td>
+                                            <td>{{carrinho.nome | limitTo: '50' }}...</td>
+                                            <td>x{{carrinho.quantidade}}</td>
+                                            <td>{{carrinho.preco_venda | currency}}</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>
